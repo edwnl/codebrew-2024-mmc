@@ -1,49 +1,54 @@
-from firebase_functions import https_fn
-from firebase_admin import firestore
-
 from api.functions.auth import validate_uid
+from firebase_admin import firestore
 
 # Initialize Firestore client
 db = firestore.client()
 
 # Collection names
-USERS_COLLECTION = "USERS"
-FITS_COLLECTION = "FITS"
+USERS_COLLECTION = "users"
+FITS_COLLECTION = "fits"
 
-# Register callable functions for fit operations
-@https_fn.on_call()
-def add_fit(req: https_fn.CallableRequest):
-    # Get user ID from authentication
+
+def get_fits(req):
     uid = validate_uid(req)
+    fits = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).get()
+    fits_list = [{"id": fit.id, **fit.to_dict()} for fit in fits]
+    return fits_list
 
-    # Get fit data from request
+
+def add_fit(req):
+    uid = validate_uid(req)
     data = req.data
-    name = data.get("name")
+    cloth_ids = data.get("cloth_ids")
     tags = data.get("tags")
-
-    # Add fit for the user
-    fit_data = {"name": name, "tags": tags}
+    fit_data = {"cloth_ids": cloth_ids, "tags": tags}
     fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).add(fit_data)
     return {"fit_id": fit_ref.id}
 
-@https_fn.on_call()
-def edit_fit(req: https_fn.CallableRequest):
-    # Get user ID from authentication
-    uid = validate_uid(req)
 
-    # Get fit data from request
+def edit_fit(req):
+    uid = validate_uid(req)
     data = req.data
-    fit_id = data.get("fit_id")
+    fit_id = data.get("id")
     name = data.get("name")
     tags = data.get("tags")
-
-    # Edit fit for the user
+    cloth_ids = data.get("cloth_ids")
     fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).document(fit_id)
     update_data = {}
     if name:
         update_data["name"] = name
     if tags:
         update_data["tags"] = tags
+    if cloth_ids:
+        update_data["cloth_ids"] = cloth_ids
     fit_ref.update(update_data)
-
     return {"message": "Fit edited successfully"}
+
+
+def delete_fit(req):
+    uid = validate_uid(req)
+    data = req.data
+    fit_id = data.get("id")
+    fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).document(fit_id)
+    fit_ref.delete()
+    return {"message": "Fit deleted successfully"}

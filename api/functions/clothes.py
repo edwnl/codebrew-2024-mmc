@@ -6,44 +6,72 @@ from auth import validate_uid
 db = firestore.client()
 
 # Collection names
-USERS_COLLECTION = "USERS"
-WARDROBE_COLLECTION = "WARDROBE"
+USERS_COLLECTION = "users"
+WARDROBE_COLLECTION = "clothes"
 
 
-# Register callable functions for cloth operations
-@https_fn.on_call()
-def add_cloth(req: https_fn.CallableRequest):
+def get_clothes(req):
     uid = validate_uid(req)
+    clothes = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).get()
+    clothes_list = [{"id": cloth.id, **cloth.to_dict()} for cloth in clothes]
+    return clothes_list
 
-    # Get cloth data from request
+
+def add_cloth(req):
+    uid = validate_uid(req)
     data = req.data
     name = data.get("name")
     tags = data.get("tags")
-
-    # Add cloth for the user
-    cloth_data = {"name": name, "tags": tags}
+    image = data.get("image")
+    cloth_data = {"name": name, "tags": tags, "image": image}
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).add(cloth_data)
     return {"cloth_id": cloth_ref.id}
 
 
-@https_fn.on_call()
-def edit_cloth(req: https_fn.CallableRequest):
-    # Get user ID from authentication
+def add_cloth_bulk(req):
     uid = validate_uid(req)
+    data_arr = req.data
+    batch = db.batch()
 
-    # Get cloth data from request
+    cloth_refs = []
+    for data in data_arr:
+        name = data.get("name")
+        tags = data.get("tags")
+        image = data.get("image")
+        cloth_data = {"name": name, "tags": tags, "image": image}
+        cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).document()
+        batch.set(cloth_ref, cloth_data)
+        cloth_refs.append({"cloth_id": cloth_ref.id})
+
+    # Commit the batched write operation
+    batch.commit()
+
+    return cloth_refs
+
+
+def edit_cloth(req):
+    uid = validate_uid(req)
     data = req.data
-    cloth_id = data.get("cloth_id")
+    cloth_id = data.get("id")
     name = data.get("name")
     tags = data.get("tags")
-
-    # Edit cloth for the user
+    image = data.get("image")
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).document(cloth_id)
     update_data = {}
     if name:
         update_data["name"] = name
     if tags:
         update_data["tags"] = tags
+    if image:
+        update_data["image"] = image
     cloth_ref.update(update_data)
-
     return {"message": "Cloth edited successfully"}
+
+
+def delete_cloth(req):
+    uid = validate_uid(req)
+    data = req.data
+    cloth_id = data.get("id")
+    cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).document(cloth_id)
+    cloth_ref.delete()
+    return {"message": "Cloth deleted successfully"}
