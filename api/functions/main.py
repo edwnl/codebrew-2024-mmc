@@ -1,13 +1,9 @@
-# Welcome to Cloud Functions for Firebase for Python!
-# To get started, simply uncomment the below code or create your own.
-# Deploy with `firebase deploy`
-
 from firebase_functions import https_fn
-from firebase_admin import initialize_app
+from clothes import add_cloth, edit_cloth
+from fits import add_fit, edit_fit
 
-# initialize_app()
-#
-#
-# @https_fn.on_request()
-# def on_request_example(req: https_fn.Request) -> https_fn.Response:
-#     return https_fn.Response("Hello world!")
+# Register callable functions
+add_cloth = https_fn.on_call(add_cloth)
+edit_cloth = https_fn.on_call(edit_cloth)
+add_fit = https_fn.on_call(add_fit)
+edit_fit = https_fn.on_call(edit_fit)
