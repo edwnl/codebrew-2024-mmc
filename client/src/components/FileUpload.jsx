@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import styled from '@emotion/styled';
 
 const FileUpload = ({ onFilesSelect }) => {
   const fileInputRef = useRef(null);
@@ -38,18 +39,30 @@ const FileUpload = ({ onFilesSelect }) => {
         accept="image/*"
         capture="camera"
       />
-      <button
-        onClick={handleClick}
-        className="fixed bottom-4 right-4 bg-transparent hover:bg-transparent text-black font-bold py-2 px-4 rounded flex items-center"
-        style={{ zIndex: 999 }}
-      >
+      <RoundButton onClick={handleClick}>
         <AddIcon
-          sx={{ fontSize: { xs: 40, sm: 40, md: 40, lg: 60 } }}
+          sx={{ fontSize: { xs: 40, sm: 40, md: 40, lg: 50 } }}
           style={{ cursor: 'pointer' }}
         />
-      </button>
+      </RoundButton>
     </div>
   );
 };
 
 export default FileUpload;
+
+const RoundButton = styled('button')({
+  position: 'fixed',
+  bottom: '20px',
+  right: '20px',
+  backgroundColor: '#2196f3',
+  color: 'white',
+  borderRadius: '50%',
+  width: '60px',
+  height: '60px',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 999
+});
