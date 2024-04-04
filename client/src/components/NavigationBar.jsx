@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const NavigationBar = () => {
   return (
-    <React.Fragment>
+    <>
       <NavBar id="navigation-bar" position="fixed" component="header">
         <NavContainer maxWidth="inherit">
           <NavTextBox
@@ -19,7 +19,7 @@ const NavigationBar = () => {
           <SideNav />
         </NavContainer>
       </NavBar>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -1,11 +1,9 @@
-import { Typography } from '@mui/material';
+import React from 'react';
+import ProductGrid from '../components/ProductGrid';
+import { products } from '../utils/testdata';
 
 const Clothes = () => {
-  return (
-    <div>
-      <Typography>Clothes Page</Typography>
-    </div>
-  );
+  return <ProductGrid products={products} />;
 };
 
 export default Clothes;
