@@ -19,7 +19,7 @@ export const SideNav = () => {
   return (
     <Hidden mdUp>
       <Hamburger
-        color="black"
+        color="red"
         label="show menu"
         toggled={isDrawerOpen}
         toggle={setDrawerOpen}
@@ -28,7 +28,7 @@ export const SideNav = () => {
       />
       <Slide
         id="mobile-navigation-bar"
-        direction="left"
+        direction="right"
         in={isDrawerOpen}
         mountOnEnter
         unmountOnExit
@@ -63,7 +63,7 @@ const MobileNav = styled.nav`
 
 const Modal = styled.aside`
   &&& {
-    right: 0;
+    left: 0;
     z-index: -1;
     width: 100%;
     height: 100vh;
