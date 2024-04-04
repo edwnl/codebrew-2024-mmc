@@ -34,6 +34,6 @@ const MainContainer = styled(Box)`
   background-color: white;
   justify-content: center;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   align-items: center;
 `;
