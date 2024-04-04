@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
 
-const Home = () => {
+const Fit = () => {
   return (
     <div>
-      <Typography>Home Page</Typography>
+      <Typography>Fit Page</Typography>
     </div>
   );
 };
 
-export default Home;
+export default Fit;
