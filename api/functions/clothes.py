@@ -57,6 +57,16 @@ def edit_cloth(req):
     tags = data.get("tags")
     image = data.get("image")
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).document(cloth_id)
+
+    # Check if the cloth belongs to the user
+    cloth_data = cloth_ref.get().to_dict()
+    if not cloth_data:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.NOT_FOUND,
+                                  message="Cloth not found")
+    if cloth_data['uid'] != uid:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.PERMISSION_DENIED,
+                                  message="Permission denied")
+
     update_data = {}
     if name:
         update_data["name"] = name
@@ -73,5 +83,15 @@ def delete_cloth(req):
     data = req.data
     cloth_id = data.get("id")
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).document(cloth_id)
+
+    # Check if the cloth belongs to the user
+    cloth_data = cloth_ref.get().to_dict()
+    if not cloth_data:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.NOT_FOUND,
+                                  message="Cloth not found")
+    if cloth_data['uid'] != uid:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.PERMISSION_DENIED,
+                                  message="Permission denied")
+
     cloth_ref.delete()
     return {"message": "Cloth deleted successfully"}

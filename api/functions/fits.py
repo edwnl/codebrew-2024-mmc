@@ -1,3 +1,5 @@
+from firebase_functions import https_fn
+
 from api.functions.auth import validate_uid
 from firebase_admin import firestore
 
@@ -34,6 +36,16 @@ def edit_fit(req):
     tags = data.get("tags")
     cloth_ids = data.get("cloth_ids")
     fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).document(fit_id)
+
+    # Check if the fit belongs to the user
+    fit_data = fit_ref.get().to_dict()
+    if not fit_data:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.NOT_FOUND,
+                                  message="Fit not found")
+    if fit_data['uid'] != uid:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.PERMISSION_DENIED,
+                                  message="Permission denied")
+
     update_data = {}
     if name:
         update_data["name"] = name
@@ -50,5 +62,15 @@ def delete_fit(req):
     data = req.data
     fit_id = data.get("id")
     fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).document(fit_id)
+
+    # Check if the fit belongs to the user
+    fit_data = fit_ref.get().to_dict()
+    if not fit_data:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.NOT_FOUND,
+                                  message="Fit not found")
+    if fit_data['uid'] != uid:
+        raise https_fn.HttpsError(code=https_fn.FunctionsErrorCode.PERMISSION_DENIED,
+                                  message="Permission denied")
+
     fit_ref.delete()
     return {"message": "Fit deleted successfully"}
