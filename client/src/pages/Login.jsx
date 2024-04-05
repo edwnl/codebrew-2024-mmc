@@ -1,6 +1,5 @@
 import React from 'react';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import app from '../App';
 import Logo from '../components/Logo';
 
 const GoogleIconSVG = (
