@@ -1,7 +1,7 @@
 import pandas as pd
+import json
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
-from torch import tensor
 import torchvision.transforms as transforms
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
@@ -9,6 +9,7 @@ import torchvision.models as models
 import torch
 
 PATH_TO_IMAGES = 'model_files/images_compressed/'
+
 df = pd.read_csv('model_files/images.csv')
 
 # remove all images where 'kids' is True or label is 'other','Not sure','Skip'
@@ -17,6 +18,10 @@ df = df[['image', 'label']]
 
 # Create a mapping of labels to integers
 label_to_int = {label: idx for idx, label in enumerate(df['label'].unique())}
+# save int_to_label to a file
+int_to_label = {v: k for k, v in label_to_int.items()}
+with open('model_files/int_to_label.json', 'w') as f:
+    json.dump(int_to_label, f)
 # Map the labels column to integers using the mapping
 df['label'] = df['label'].apply(lambda x: label_to_int[x])
 
@@ -37,7 +42,7 @@ class CustomDataset(Dataset):
         if self.transform:
             image = self.transform(image)
             
-        label = tensor(label, dtype=torch.long)
+        label = torch.tensor(label, dtype=torch.long)
 
         return image, label
     
@@ -67,18 +72,20 @@ num_features = model.fc.in_features
 num_classes = len(df['label'].unique())  # Number of unique labels
 model.fc = nn.Linear(num_features, num_classes)
 
-if torch.cuda.is_available():
-    print('Using GPU')
-else:
-    print('Using cpu')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
+
+# check if model weights already exist
+try:
+    model.load_state_dict(torch.load('model_files/model.pth'))
+finally:
+    pass
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
-num_epochs = 10
-for epoch in range(num_epochs):
+NUM_EPOCHS = 10
+for epoch in range(NUM_EPOCHS):
     model.train()
     running_loss = 0.0
     print(f"training start {epoch}")
@@ -112,5 +119,17 @@ for epoch in range(num_epochs):
             correct += (predicted == labels).sum().item()
     
     print(f"Validation Loss: {val_running_loss/len(val_loader)}, Accuracy: {100 * correct / total}%")
-    
+
+# evaluate the model on the test set
+model.eval()
+test_correct = 0
+test_total = 0
+with torch.no_grad():
+    for inputs, labels in test_loader:
+        inputs, labels = inputs.to(device), labels.to(device)
+        outputs = model(inputs)
+        _, predicted = torch.max(outputs.data, 1)
+        test_total += labels.size(0)
+        test_correct += (predicted == labels).sum().item()
+
 torch.save(model.state_dict(), 'model_files/model.pth')
