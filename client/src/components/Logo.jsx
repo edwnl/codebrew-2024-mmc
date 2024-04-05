@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Logo = ({ size }) => {
+const Logo = ({ className }) => {
     return (
-        <div className={`${size} tracking-wider pb-4`}>
+        <span className={`${className} tracking-wider pb-4`}>
             WARDROBE
-        </div>
+        </span>
     );
 };
 
