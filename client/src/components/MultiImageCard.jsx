@@ -73,7 +73,7 @@ const MultiImageCard = ({ product, productIndex }) => {
       >
         <div className="grid grid-cols-2 gap-1">
           {fitImages.slice(0, 4).map((imageUrl, index) => (
-            <div key={index} className="w-full" onClick={() => showImagePreview()}>
+            <div key={index} className="w-full">
               <Image
                 width="100%"
                 src={imageUrl}
