@@ -1,8 +1,6 @@
-import Tags from './Tags';
-
-import { Card, Modal, Typography, Button, Image } from 'antd';
+import { Card, Modal, Typography, Button, Image, Tag } from 'antd';
 import React, { useState } from 'react';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 const ProductCard = ({ product, imageSize = 250 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,13 +8,15 @@ const ProductCard = ({ product, imageSize = 250 }) => {
   const [productImage, setProductImage] = useState(product.imageUrl);
   const [tempProductName, setTempProductName] = useState(product.name);
   const [tempProductImage, setTempProductImage] = useState(product.imageUrl);
+  const [tags, setTags] = useState(['t-shirt', 'red', 'blue', 'indigo']);
+  const [newTag, setNewTag] = useState('');
+  const [tempTags, setTempTags] = useState([...tags]);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
-    // Reset the temporary edited values
     setTempProductName(productName);
     setTempProductImage(productImage);
     setIsModalVisible(false);
@@ -25,6 +25,7 @@ const ProductCard = ({ product, imageSize = 250 }) => {
   const handleConfirm = () => {
     setProductName(tempProductName);
     setProductImage(tempProductImage);
+    setTags(tempTags);
     setIsModalVisible(false);
   };
   const handleImageClick = () => {
@@ -50,6 +51,18 @@ const ProductCard = ({ product, imageSize = 250 }) => {
     event.target.value = '';
   };
 
+  const handleTagClose = (removedTag) => {
+    const updatedTags = tempTags.filter((tag) => tag !== removedTag);
+    setTempTags(updatedTags);
+  };
+
+  const handleAddTag = () => {
+    if (newTag.trim() !== '') {
+      setTempTags([...tempTags, newTag]);
+      setNewTag('');
+    }
+  };
+
   return (
     <>
       <Card
@@ -66,11 +79,17 @@ const ProductCard = ({ product, imageSize = 250 }) => {
         className="max-w-64 m-2"
       >
         <Card.Meta title={productName} />
-        <Tags tags={['t-shirt', 'red', 'blue', 'indigo']} />
+        <br />
+        {tags.map((index) => (
+          <Tag key={index} bordered={true}>
+            {index}
+          </Tag>
+        ))}
+        <br />
         <EditOutlined key="edit" onClick={showModal} />
       </Card>
       <Modal
-        title="Edit Product"
+        title="Update Clothing"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
@@ -94,8 +113,19 @@ const ProductCard = ({ product, imageSize = 250 }) => {
             >
               {tempProductName}
             </Typography.Title>
-
-            <p>Price: AU${product.price}</p>
+            {tempTags.map((tag) => (
+              <Tag key={tag} closable onClose={() => handleTagClose(tag)}>
+                {tag}
+              </Tag>
+            ))}
+            <Tag
+              icon={<PlusOutlined />}
+              onClick={handleAddTag}
+              style={{ background: '#fff', borderStyle: 'dashed' }}
+            >
+              Add new tag
+            </Tag>
+            {/* TODO: Complete the functionality for adding tag */}
           </div>
           <div style={{ flex: 1 }}>
             <input
