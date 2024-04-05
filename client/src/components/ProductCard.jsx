@@ -2,7 +2,7 @@ import { Card, Modal, Typography, Button, Image, Tag } from 'antd';
 import React, { useState } from 'react';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
-const ProductCard = ({ product, productIndex, imageSize = 250 }) => {
+const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false); // modal to update the product
   const [productName, setProductName] = useState(product.name);
   const [productImage, setProductImage] = useState(product.imageUrl);
@@ -34,7 +34,6 @@ const ProductCard = ({ product, productIndex, imageSize = 250 }) => {
 
   // to trigger the image upload
   const handleImageClick = () => {
-    console.log(imageUploadId);
     document.getElementById(productID).click();
   };
 
@@ -54,7 +53,6 @@ const ProductCard = ({ product, productIndex, imageSize = 250 }) => {
       setTempProductImage(e.target.result);
     };
     reader.readAsDataURL(file);
-    event.target.value = '';
   };
 
   // to remove tags
