@@ -1,6 +1,6 @@
-import { Card, Modal, Typography, Button, Image, Tag } from 'antd';
-import React, { useState } from 'react';
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Modal, Typography, Button, Image, Tag, Input } from 'antd';
+import React, { useState, useRef } from 'react';
+import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false); // modal to update the product
@@ -9,8 +9,10 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
   const [tempProductName, setTempProductName] = useState(product.name);
   const [tempProductImage, setTempProductImage] = useState(product.imageUrl);
   const [tags, setTags] = useState(['t-shirt', 'red', 'blue', 'indigo']);
-  const [newTag, setNewTag] = useState('');
   const [tempTags, setTempTags] = useState([...tags]);
+  const [inputVisible, setInputVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef(null);
 
   const productID = `product-no-${productIndex}`;
 
@@ -19,8 +21,6 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
 
   // to close the edit product modal without any changes
   const handleCancel = () => {
-    setTempProductName(productName);
-    setTempProductImage(productImage);
     setIsModalVisible(false);
   };
 
@@ -61,11 +61,23 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
     setTempTags(updatedTags);
   };
 
-  const handleAddTag = () => {
-    if (newTag.trim() !== '') {
-      setTempTags([...tempTags, newTag]);
-      setNewTag('');
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleInputConfirm = () => {
+    if (inputValue.trim() !== '') {
+      setTempTags([...tempTags, inputValue.trim()]);
+      setInputValue('');
+      setInputVisible(false);
     }
+  };
+
+  // Add delete funcitonality here
+  const deleteProduct = () => {};
+
+  const showInput = () => {
+    setInputVisible(true);
   };
 
   return (
@@ -82,19 +94,24 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
           />
         }
         className="max-w-64 m-2"
+        actions={[
+          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
+        ]}
       >
-        <Card.Meta title={productName} />
-        <br />
-        {tags.map((index) => (
-          <Tag key={index} bordered={true}>
-            {index}
-          </Tag>
-        ))}
-        <br />
-        <EditOutlined key="edit" onClick={showModal} />
+        <div>
+          <Card.Meta title={productName} />
+          <br />
+          {tags.slice(0, 5).map((tag) => (
+            <Tag key={tag} onClose={() => handleTagClose(tag)}>
+              {tag}
+            </Tag>
+          ))}
+          {tempTags.length > 6 && <Tag>.....</Tag>}
+        </div>
       </Card>
       <Modal
-        title="Update Clothing"
+        title="Edit your Fit"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
@@ -123,14 +140,22 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
                 {tag}
               </Tag>
             ))}
-            <Tag
-              icon={<PlusOutlined />}
-              onClick={handleAddTag}
-              style={{ background: '#fff', borderStyle: 'dashed' }}
-            >
-              Add new tag
-            </Tag>
-            {/* TODO: Complete the functionality for adding tag */}
+            {inputVisible ? (
+              <Input
+                ref={inputRef}
+                type="text"
+                size="small"
+                style={{ width: 78, margin: '4px 0' }}
+                value={inputValue}
+                onChange={handleInputChange}
+                onBlur={handleInputConfirm}
+                onPressEnter={handleInputConfirm}
+              />
+            ) : (
+              <Tag style={{ cursor: 'pointer' }} onClick={showInput} icon={<PlusOutlined />}>
+                Add Tag
+              </Tag>
+            )}
           </div>
           <div style={{ flex: 1 }}>
             <input

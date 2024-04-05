@@ -2,7 +2,7 @@ import React from 'react';
 import ProductGrid from '../components/ProductGrid';
 import { products } from '../utils/testdata';
 import FileUpload from '../components/FileUpload';
-import ProductCard from "../components/ProductCard";
+import ProductCard from '../components/ProductCard';
 
 const Clothes = () => {
   const handleFileSelect = (file) => {
