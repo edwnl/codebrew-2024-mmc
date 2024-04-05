@@ -1,9 +1,6 @@
+from auth import validate_uid
 from firebase_functions import https_fn
-from api.functions.auth import validate_uid
 from firebase_admin import firestore
-
-# Initialize Firestore client
-db = firestore.client()
 
 # Collection names
 USERS_COLLECTION = "users"
@@ -12,6 +9,9 @@ FITS_COLLECTION = "fits"
 def get_fits(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Query fits collection for the user
     fits = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).get()
@@ -24,6 +24,9 @@ def get_fits(req):
 def add_fit(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract data from request
     data = req.data
@@ -41,6 +44,9 @@ def add_fit(req):
 def edit_fit(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract data from request
     data = req.data
@@ -78,6 +84,9 @@ def edit_fit(req):
 def delete_fit(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract fit ID from request
     data = req.data
