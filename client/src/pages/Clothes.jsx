@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import { products as items } from '../utils/testdata';
+import React, { useContext } from 'react';
 
 import ProductCard from '../components/ProductCard';
 import FileUpload from '../components/FileUpload';
+import { DataContext } from '../App';
 
 const Clothes = () => {
-  const [products, setProducts] = useState(items);
+  const { products, handleDeleteProduct } = useContext(DataContext);
 
   const handleFileSelect = (file) => {
     // TODO: add functionality to take care of the file here
     console.log('Selected file:', file);
-  };
-
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
   };
 
   return (
