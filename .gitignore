@@ -73,7 +73,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
+client/.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -128,6 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.idea/*
+.idea/
+.DS_Store
+.idea
+/.idea
+**/.idea/
 
 # python virtualenv
 .venv/
+
