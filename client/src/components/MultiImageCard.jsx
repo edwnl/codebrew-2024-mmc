@@ -60,10 +60,10 @@ const MultiImageCard = ({ product, productIndex }) => {
 
   return (
     <React.Fragment>
-      <Card id="sample" hoverable className="max-w-64 m-2">
+      <Card id="sample" className="max-w-64 m-2">
         <div className="grid grid-cols-2 gap-1">
           {fitImages.slice(0, 4).map((imageUrl, index) => (
-            <div key={index} className="w-full" onClick={() => showImagePreview()}>
+            <div key={index} className="w-full" >
               <Image
                 width="100%"
                 src={imageUrl}
@@ -77,7 +77,13 @@ const MultiImageCard = ({ product, productIndex }) => {
         <div className="mt-2">
           <Card.Meta title={productName} />
           <Tags tags={['t-shirt', 'red', 'blue', 'indigo']} />
-          <EditOutlined key="edit" onClick={showModal} />
+            <Button key="cancel" onClick={showModal}>
+                Edit
+            </Button>
+            {"           "}
+            <Button key="confirm" type="primary" onClick={() => showImagePreview()}>
+                Preview
+            </Button>
         </div>
       </Card>
       <Modal
