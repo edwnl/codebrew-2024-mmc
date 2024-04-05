@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -7,29 +7,17 @@ import Fit from './pages/Fit';
 import NoPage from './pages/NoPage';
 import { AuthenticatedElement, UnauthenticatedElement } from './auth/AuthElements';
 import NavigationBar from './components/NavigationBar';
-import { products as items } from './utils/testdata';
-import { fits as infos } from './utils/fitdata';
+import { useDataContext } from './utils/DataContext';
 
 export const DataContext = createContext();
 
 function App() {
-  const [fits, setFits] = useState(infos);
-  const [products, setProducts] = useState(items);
+  const { fits, setFits, products, setProducts, handleDeleteProduct, handleDeleteFit } =
+    useDataContext();
 
-  // Hiding Nav Bar for specific routes - Login and 404
   const location = useLocation();
-
   const showNavBarPaths = ['/', '/clothes', '/fit'];
   const shouldNavDisplay = showNavBarPaths.includes(location.pathname);
-
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
-  };
-
-  const handleDeleteFit = (fitID) => {
-    console.log('Deleting product with ID:', fitID);
-    setFits(fits.filter((fit) => fit.id !== fitID));
-  };
 
   return (
     <DataContext.Provider
