@@ -95,8 +95,8 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
         }
         className="max-w-64 m-2"
         actions={[
-          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '16px' }} />,
-          <DeleteOutlined key="delete" style={{ fontSize: '16px' }} onClick={deleteProduct} />
+          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
         ]}
       >
         <div>
@@ -111,7 +111,7 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
         </div>
       </Card>
       <Modal
-        title="Update Clothing"
+        title="Edit your Fit"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[

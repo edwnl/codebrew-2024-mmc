@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { PlusOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 
 const FileUpload = ({ onFilesSelect }) => {
@@ -40,10 +40,7 @@ const FileUpload = ({ onFilesSelect }) => {
         capture="camera"
       />
       <RoundButton onClick={handleClick}>
-        <AddIcon
-          sx={{ fontSize: { xs: 40, sm: 40, md: 40, lg: 50 } }}
-          style={{ cursor: 'pointer' }}
-        />
+        <PlusOutlined style={{ fontSize: '24px' }} />
       </RoundButton>
     </div>
   );

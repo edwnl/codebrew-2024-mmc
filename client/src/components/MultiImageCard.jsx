@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button, Typography, Image } from 'antd';
 import Tags from './Tags';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const MultiImageCard = ({ product, productIndex }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -58,9 +58,19 @@ const MultiImageCard = ({ product, productIndex }) => {
     reader.readAsDataURL(file);
   };
 
+  // TODO: Add delete funcitonality here
+  const deleteProduct = () => {};
+
   return (
     <React.Fragment>
-      <Card id="sample" hoverable className="max-w-64 m-2">
+      <Card
+        hoverable
+        className="max-w-64 m-4"
+        actions={[
+          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
+        ]}
+      >
         <div className="grid grid-cols-2 gap-1">
           {fitImages.slice(0, 4).map((imageUrl, index) => (
             <div key={index} className="w-full" onClick={() => showImagePreview()}>
@@ -77,11 +87,10 @@ const MultiImageCard = ({ product, productIndex }) => {
         <div className="mt-2">
           <Card.Meta title={productName} />
           <Tags tags={['t-shirt', 'red', 'blue', 'indigo']} />
-          <EditOutlined key="edit" onClick={showModal} />
         </div>
       </Card>
       <Modal
-        title="Update Clothing"
+        title="Edit Wardrobe Item"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
@@ -134,6 +143,7 @@ const MultiImageCard = ({ product, productIndex }) => {
       <Modal
         title="Clothes in the Fit"
         open={areProductsVisible}
+        width="350px"
         onCancel={closeImagesPreview}
         footer={[
           <Button key="cancel" onClick={closeImagesPreview}>
@@ -141,17 +151,28 @@ const MultiImageCard = ({ product, productIndex }) => {
           </Button>
         ]}
       >
-        <div style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
-          {fitImages.map((imageUrl, index) => (
-            <div key={index} style={{ display: 'inline-block', marginRight: '10px' }}>
-              <Image
-                width={200}
-                src={imageUrl}
-                alt={product.name}
-                fallback={<div>Loading...</div>}
-              />
-            </div>
-          ))}
+        <br />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '500px',
+            overflowY: 'scroll'
+          }}
+        >
+          <div style={{ maxWidth: '300px' }}>
+            {fitImages.map((imageUrl, index) => (
+              <div key={index} className="image-container mb-2">
+                <Image
+                  width="100%"
+                  src={imageUrl}
+                  alt={product.name}
+                  fallback={<div>Loading...</div>}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </Modal>
     </React.Fragment>
