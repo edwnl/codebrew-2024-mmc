@@ -61,7 +61,7 @@ const NavigationBar = () => {
               {NAV_ROUTES.map((item) => (
                 <li key={item.id}>
                   <Link to={item.to} tabIndex={1} className="block py-2 px-3 md:p-0">
-                    {item.text}
+                    <Typography.Title level={3}>{item.text}</Typography.Title>
                   </Link>
                 </li>
               ))}
@@ -71,7 +71,7 @@ const NavigationBar = () => {
             <button
               onClick={handleLogout}
               type="button"
-              className="text-white bg-black hover:bg-gray-800 rounded-lg text-sm px-4 py-2 text-center"
+              className="text-white bg-black hover:bg-gray-800 rounded-lg text-base px-4 py-2 text-center"
             >
               Logout
             </button>
@@ -124,14 +124,14 @@ const NavigationBar = () => {
                 </Link>
               </li>
             ))}
-            <Button
+            <button
               onClick={handleLogout}
               type="button"
               size="large"
-              className="text-white bg-black hover:bg-gray-800"
+              className="text-white bg-black hover:bg-gray-800 rounded-lg text-base px-6 py-3 text-center"
             >
               Logout
-            </Button>
+            </button>
           </ul>
         </Drawer>
       </div>
