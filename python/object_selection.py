@@ -2,6 +2,9 @@ from rembg import remove
 from PIL import Image
 import numpy as np
 from sklearn.cluster import KMeans
+from collections import defaultdict
+# add timer to check how long it takes to run the code
+import time
 
 COLOURS = {
     'red': (237, 19, 19),
@@ -58,14 +61,17 @@ def match_to_set_colors(img, set_colors=COLOURS):
         closest_colors = sorted(set_colors.items(), key=lambda x: np.linalg.norm(np.array(x[1])-color))
         matched_colors.append(closest_colors[0][0])
     
-    colour_count = {}
+    colour_count = defaultdict(int)
     for i in range(len(matched_colors)):
-        if matched_colors[i] in colour_count:
-            colour_count[matched_colors[i]] += cluster_count[i]
-        else:
-            colour_count[matched_colors[i]] = cluster_count[i]
+        colour_count[matched_colors[i]] += cluster_count[i]
+    
     return colour_count
 
-test_img = Image.open('python\\test_image_final.png')
+# add timer
+start = time.time()
+test_img = Image.open('python\\test_image_final2.png')
 matched = match_to_set_colors(test_img)
+
+# print the time taken to run the code
+print(f"Time taken: {time.time() - start}")
 print(matched)
