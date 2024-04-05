@@ -103,7 +103,7 @@ const MultiImageCard = ({ product, productIndex }) => {
         ]}
       >
         <div style={{ maxHeight: '500px', overflowY: 'scroll' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
             <div style={{ flex: 1 }}>
               <Typography.Title
                 level={4}
