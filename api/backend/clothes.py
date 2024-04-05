@@ -2,17 +2,17 @@ from firebase_functions import https_fn
 from firebase_admin import firestore
 from auth import validate_uid
 
-# Initialize Firestore client
-db = firestore.client()
 
 # Collection names
 USERS_COLLECTION = "users"
 WARDROBE_COLLECTION = "clothes"
 
-
 def get_clothes(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Query clothes collection for the user
     clothes = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).get()
@@ -22,10 +22,12 @@ def get_clothes(req):
 
     return clothes_list
 
-
 def add_cloth(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract data from request
     data = req.data
@@ -41,10 +43,12 @@ def add_cloth(req):
 
     return {"cloth_id": cloth_ref.id}
 
-
 def add_cloth_bulk(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract data array from request
     data_arr = req.data
@@ -70,10 +74,12 @@ def add_cloth_bulk(req):
 
     return cloth_refs
 
-
 def edit_cloth(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract data from request
     data = req.data
@@ -108,10 +114,12 @@ def edit_cloth(req):
 
     return {"message": "Cloth edited successfully"}
 
-
 def delete_cloth(req):
     # Get user ID
     uid = validate_uid(req)
+
+    # Initialize Firestore client
+    db = firestore.client()
 
     # Extract cloth ID from request
     data = req.data
