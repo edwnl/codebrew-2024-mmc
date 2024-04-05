@@ -1,10 +1,10 @@
 import Tags from './Tags';
 
-import { Card, Modal, Typography, Button } from 'antd';
+import { Card, Modal, Typography, Button, Image } from 'antd';
 import React, { useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, imageSize = 250 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [productName, setProductName] = useState(product.name);
   const [productImage, setProductImage] = useState(product.imageUrl);
@@ -27,34 +27,42 @@ const ProductCard = ({ product }) => {
     setProductImage(tempProductImage);
     setIsModalVisible(false);
   };
-
-  const handleNameChange = (value) => {
-    setTempProductName(value);
-  };
-
   const handleImageClick = () => {
     document.getElementById('image-upload').click();
   };
 
-  const handleImageChange = (info) => {
-    const file = info.file;
-
-    if (file && file.status === 'done' && file.type && file.type.startsWith('image/')) {
-      setProductImage(file.response.url);
-    } else {
+  // TODO: Fix the functionality for image upload
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file || !file.type.startsWith('image/')) {
       Modal.error({
         title: 'Error',
         content: 'Please upload a valid image file.'
       });
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setTempProductImage(e.target.result);
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
   };
 
   return (
     <>
       <Card
         hoverable
-        onClick={showModal}
-        cover={<img alt={productName} src={productImage} />}
+        cover={
+          <Image
+            width="100%"
+            height={imageSize}
+            src={productImage}
+            alt={productName}
+            fallback={<div>Loading...</div>}
+          />
+        }
         className="max-w-64 m-2"
       >
         <Card.Meta title={productName} />
@@ -79,7 +87,7 @@ const ProductCard = ({ product }) => {
             <Typography.Title
               level={4}
               editable={{
-                onChange: handleNameChange,
+                onChange: setTempProductName,
                 icon: <EditOutlined />,
                 autoSize: true
               }}
@@ -96,11 +104,14 @@ const ProductCard = ({ product }) => {
               style={{ display: 'none' }}
               onChange={handleImageChange}
             />
-            <img
-              src={productImage}
-              alt={productName}
-              style={{ maxWidth: '100%', cursor: 'pointer' }}
+            <Image
+              width="100%"
+              height={imageSize}
+              preview={false}
+              src={tempProductImage}
+              alt={tempProductName}
               onClick={handleImageClick}
+              fallback={<div>Loading...</div>}
             />
           </div>
         </div>
