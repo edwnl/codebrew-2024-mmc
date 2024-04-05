@@ -1,9 +1,7 @@
-import { Typography } from '@mui/material';
-
 export const NoPage = () => {
   return (
     <div>
-      <Typography>No Page</Typography>
+      <p className="text-2xl m-10" >Nothing here :(</p>
     </div>
   );
 };

@@ -1,28 +1,29 @@
 import React from 'react';
-import { Button } from '@mui/material';
+
+const GoogleIconSVG = (
+    <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+         fill="currentColor" viewBox="0 0 18 19">
+        <path fillRule="evenodd"
+              d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
+              clipRule="evenodd"/>
+    </svg>
+);
 
 const Login = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 w-screen">
-      <div className="container flex items-center justify-center mx-auto px-4">
-        <div className="hidden md:block md:w-1/2">
-          {/* TODO: Add Image and update background color for sign up container*/}
-          {/* <Image /> */}
+      <>
+        {/*  TODO: Fix mt-64, I want to center it vertically but the navbar causes it to extend too far down.*/}
+        <div className="flex justify-center items-center mt-64">
+            <div className="max-w-sm p-6 bg-white shadow rounded-lg border-2 border-black">
+                <p className="text-xl text-center mb-6">Welcome!</p>
+                <button
+                    className="flex items-center justify-center bg-black text-white py-2 px-4 rounded-md w-full">
+                    {GoogleIconSVG}
+                    Login with Google
+                </button>
+            </div>
         </div>
-
-        <div className="w-full md:w-1/2 md:pl-10">
-          {/* Content Section */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h1 className="text-3xl font-semibold mb-4">Welcome to AI Wardrobe</h1>
-            {/* TODO: ADD LOGO HERE */}
-            <p className="text-lg mb-4">Please sign in to continue.</p>
-            <Button variant="contained" className="w-full">
-              Sign Up
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+      </>
   );
 };
 
