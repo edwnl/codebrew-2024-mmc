@@ -9,7 +9,6 @@ db = firestore.client()
 USERS_COLLECTION = "users"
 FITS_COLLECTION = "fits"
 
-
 def get_fits(req):
     # Get user ID
     uid = validate_uid(req)
@@ -21,7 +20,6 @@ def get_fits(req):
     fits_list = [fit.to_dict() for fit in fits]
 
     return fits_list
-
 
 def add_fit(req):
     # Get user ID
@@ -39,7 +37,6 @@ def add_fit(req):
     fit_ref = db.collection(USERS_COLLECTION).document(uid).collection(FITS_COLLECTION).add(fit_data)
 
     return {"fit_id": fit_ref.id}
-
 
 def edit_fit(req):
     # Get user ID
@@ -77,7 +74,6 @@ def edit_fit(req):
     fit_ref.update(update_data)
 
     return {"message": "Fit edited successfully"}
-
 
 def delete_fit(req):
     # Get user ID

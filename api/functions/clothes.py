@@ -9,7 +9,6 @@ db = firestore.client()
 USERS_COLLECTION = "users"
 WARDROBE_COLLECTION = "clothes"
 
-
 def get_clothes(req):
     # Get user ID
     uid = validate_uid(req)
@@ -21,7 +20,6 @@ def get_clothes(req):
     clothes_list = [{"id": cloth.id, **cloth.to_dict()} for cloth in clothes]
 
     return clothes_list
-
 
 def add_cloth(req):
     # Get user ID
@@ -40,7 +38,6 @@ def add_cloth(req):
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).add(cloth_data)
 
     return {"cloth_id": cloth_ref.id}
-
 
 def add_cloth_bulk(req):
     # Get user ID
@@ -69,7 +66,6 @@ def add_cloth_bulk(req):
     batch.commit()
 
     return cloth_refs
-
 
 def edit_cloth(req):
     # Get user ID
@@ -107,7 +103,6 @@ def edit_cloth(req):
     cloth_ref.update(update_data)
 
     return {"message": "Cloth edited successfully"}
-
 
 def delete_cloth(req):
     # Get user ID
