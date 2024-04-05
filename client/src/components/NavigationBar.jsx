@@ -4,7 +4,7 @@ import Logo from './Logo';
 import { signOut, getAuth } from 'firebase/auth';
 import { useAuth } from '../auth/AuthContext'; // Import the signOut function from firebase/auth
 import { NAV_ROUTES } from '../utils/navRoutes';
-import { Drawer, Space, Button } from 'antd';
+import { Drawer, Space, Button, Typography } from 'antd';
 
 const MenuButtonMobile = (
   <svg
@@ -109,7 +109,7 @@ const NavigationBar = () => {
           }
         >
           <ul
-            className="flex flex-col items-center  md:p-0 mt-4 rounded-lg md:space-x-8 md:flex-row md:mt-0 md:border-0"
+            className="flex flex-col items-center h-full justify-center md:p-0 mt-4 rounded-lg md:space-x-8 md:flex-row md:mt-0 md:border-0"
             style={{ gap: '2rem' }}
           >
             {NAV_ROUTES.map((item) => (
@@ -120,10 +120,18 @@ const NavigationBar = () => {
                   className="block py-2 px-3 md:p-0"
                   onClick={() => setIsDrawerOpen(false)}
                 >
-                  {item.text}
+                  <Typography.Title level={4}>{item.text}</Typography.Title>
                 </Link>
               </li>
             ))}
+            <Button
+              onClick={handleLogout}
+              type="button"
+              size="large"
+              className="text-white bg-black hover:bg-gray-800"
+            >
+              Logout
+            </Button>
           </ul>
         </Drawer>
       </div>

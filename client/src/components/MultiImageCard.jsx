@@ -65,7 +65,7 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
     <React.Fragment>
       <Card
         hoverable
-        className="max-w-64 m-4"
+        className="max-w-70 sm:max-w-70 md:max-w-64 m-4"
         actions={[
           <EditOutlined key="edit" onClick={showImagePreview} style={{ fontSize: '20px' }} />,
           <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />

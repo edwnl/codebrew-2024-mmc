@@ -9,6 +9,7 @@ export const useDataContext = () => {
   const [products, setProducts] = useState(items);
 
   const handleDeleteProduct = (productId) => {
+    console.log('Deleting product with ID:', productId);
     setProducts(products.filter((product) => product.id !== productId));
   };
 
