@@ -55,7 +55,7 @@ const NavigationBar = () => {
             <button
               onClick={handleLogout}
               type="button"
-              className="text-white bg-black hover:bg-gray-800 rounded-lg text-sm px-4 py-2 text-center "
+              className="text-white bg-black hover:bg-gray-800 rounded-lg text-sm px-4 py-2 text-center"
             >
               Logout
             </button>
