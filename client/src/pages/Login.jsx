@@ -1,4 +1,6 @@
 import React from 'react';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import app from "../App";
 
 const GoogleIconSVG = (
     <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +12,18 @@ const GoogleIconSVG = (
 );
 
 const Login = () => {
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log(user); // Do something with the user object
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
   return (
       <>
         {/*  TODO: Fix mt-64, I want to center it vertically but the navbar causes it to extend too far down.*/}
@@ -17,6 +31,7 @@ const Login = () => {
             <div className="max-w-sm p-6 bg-white shadow rounded-lg border-2 border-black">
                 <p className="text-xl text-center mb-6">Welcome!</p>
                 <button
+                    onClick={handleGoogleSignIn}
                     className="flex items-center justify-center bg-black text-white py-2 px-4 rounded-md w-full">
                     {GoogleIconSVG}
                     Login with Google

@@ -7,33 +7,23 @@ import Login from '../pages/Login';
 // setting the pages and the components for the routes
 export const PAGE_ROUTES = [
   {
-    pathname: '/',
-    exact: true,
-    component: Home,
+    pathname: '/',  // either
     key: 'Home'
   },
   {
-    pathname: '/login',
-    exact: false,
-    component: Login,
+    pathname: '/login', // unauthed
     key: 'Login'
   },
   {
-    pathname: '/clothes',
-    exact: false,
-    component: Clothes,
+    pathname: '/clothes', // unauthed
     key: 'Clothes'
   },
   {
-    pathname: '/fit',
-    exact: false,
-    component: Fit,
+    pathname: '/fit', // authed
     key: 'Fits'
   },
   {
-    pathname: '/*',
-    exact: true,
-    component: NoPage,
+    pathname: '/*',// either
     key: '404'
   }
 ];
