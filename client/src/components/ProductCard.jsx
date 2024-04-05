@@ -2,8 +2,8 @@ import { Card, Modal, Typography, Button, Image, Tag } from 'antd';
 import React, { useState } from 'react';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
-const ProductCard = ({ product, imageSize = 250 }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+const ProductCard = ({ product, productIndex, imageSize = 250 }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false); // modal to update the product
   const [productName, setProductName] = useState(product.name);
   const [productImage, setProductImage] = useState(product.imageUrl);
   const [tempProductName, setTempProductName] = useState(product.name);
@@ -12,27 +12,33 @@ const ProductCard = ({ product, imageSize = 250 }) => {
   const [newTag, setNewTag] = useState('');
   const [tempTags, setTempTags] = useState([...tags]);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const productID = `product-no-${productIndex}`;
 
+  // to handle the edit product modal
+  const showModal = () => setIsModalVisible(true);
+
+  // to close the edit product modal without any changes
   const handleCancel = () => {
     setTempProductName(productName);
     setTempProductImage(productImage);
     setIsModalVisible(false);
   };
 
+  // updates the product details based on changes in modal
   const handleConfirm = () => {
     setProductName(tempProductName);
     setProductImage(tempProductImage);
     setTags(tempTags);
     setIsModalVisible(false);
   };
+
+  // to trigger the image upload
   const handleImageClick = () => {
-    document.getElementById('image-upload').click();
+    console.log(imageUploadId);
+    document.getElementById(productID).click();
   };
 
-  // TODO: Fix the functionality for image upload
+  // handles the image upload and change
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (!file || !file.type.startsWith('image/')) {
@@ -51,6 +57,7 @@ const ProductCard = ({ product, imageSize = 250 }) => {
     event.target.value = '';
   };
 
+  // to remove tags
   const handleTagClose = (removedTag) => {
     const updatedTags = tempTags.filter((tag) => tag !== removedTag);
     setTempTags(updatedTags);
@@ -130,7 +137,7 @@ const ProductCard = ({ product, imageSize = 250 }) => {
           <div style={{ flex: 1 }}>
             <input
               type="file"
-              id="image-upload"
+              id={productID}
               style={{ display: 'none' }}
               onChange={handleImageChange}
             />
