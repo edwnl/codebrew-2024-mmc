@@ -2,7 +2,7 @@ export const NAV_ROUTES = [
   {
     id: 'clothes',
     to: 'clothes',
-    text: 'clothes'
+    text: 'CLOTHES'
   },
-  { id: 'fit', to: 'fit', text: 'fit' }
+  { id: 'fit', to: 'fit', text: 'FIT' }
 ];
