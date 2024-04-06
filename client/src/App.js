@@ -12,8 +12,15 @@ import { useDataContext } from './utils/DataContext';
 export const DataContext = createContext();
 
 function App() {
-  const { fits, setFits, products, setProducts, handleDeleteProduct, handleDeleteFit } =
-    useDataContext();
+  const {
+    fits,
+    setFits,
+    products,
+    setProducts,
+    handleDeleteProduct,
+    handleDeleteFit,
+    handleCreateFit
+  } = useDataContext();
 
   const location = useLocation();
   const showNavBarPaths = ['/', '/clothes', '/fit'];
@@ -27,7 +34,8 @@ function App() {
         products,
         setProducts,
         handleDeleteProduct,
-        handleDeleteFit
+        handleDeleteFit,
+        handleCreateFit
       }}
     >
       {shouldNavDisplay && <NavigationBar />}
