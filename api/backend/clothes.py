@@ -8,6 +8,7 @@ USERS_COLLECTION = "users"
 WARDROBE_COLLECTION = "clothes"
 
 def get_clothes(req):
+    data = []
     # Get user ID
     uid = validate_uid(req)
 
@@ -15,12 +16,18 @@ def get_clothes(req):
     db = firestore.client()
 
     # Query clothes collection for the user
-    clothes = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).get()
+    clothes = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).stream()
+
+    for cloth in clothes:
+        print(cloth.to_dict())
+        data.append(cloth.to_dict())
+
+    print(data)
 
     # Convert documents to list of dictionaries
-    clothes_list = [{"id": cloth.id, **cloth.to_dict()} for cloth in clothes]
+#     clothes_list = [{"id": cloth.id, **cloth.to_dict()} for cloth in clothes]
 
-    return clothes_list
+    return data
 
 def add_cloth(req):
     # Get user ID
@@ -31,6 +38,7 @@ def add_cloth(req):
 
     # Extract data from request
     data = req.data
+    print(data)
     name = data.get("name")
     tags = data.get("tags")
     image = data.get("image")
@@ -40,8 +48,8 @@ def add_cloth(req):
 
     # Add cloth to user's wardrobe
     cloth_ref = db.collection(USERS_COLLECTION).document(uid).collection(WARDROBE_COLLECTION).add(cloth_data)
-
-    return {"cloth_id": cloth_ref.id}
+    print()
+    return {"cloth_id": cloth_ref[1].id}
 
 def add_cloth_bulk(req):
     # Get user ID

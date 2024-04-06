@@ -20,8 +20,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-
+export const FIREBASE_APP = initializeApp(firebaseConfig);
+// export const FIREBASE_APP = use;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
