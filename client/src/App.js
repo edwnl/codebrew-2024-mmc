@@ -1,3 +1,4 @@
+import { createContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -6,15 +7,29 @@ import Fit from './pages/Fit';
 import NoPage from './pages/NoPage';
 import { AuthenticatedElement, UnauthenticatedElement } from './auth/AuthElements';
 import NavigationBar from './components/NavigationBar';
+import { useDataContext } from './utils/DataContext';
+
+export const DataContext = createContext();
 
 function App() {
-  // Hiding Nav Bar for specific routes - Login and 404
+  const { fits, setFits, products, setProducts, handleDeleteProduct, handleDeleteFit } =
+    useDataContext();
+
   const location = useLocation();
   const showNavBarPaths = ['/', '/clothes', '/fit'];
   const shouldNavDisplay = showNavBarPaths.includes(location.pathname);
 
   return (
-    <>
+    <DataContext.Provider
+      value={{
+        fits,
+        setFits,
+        products,
+        setProducts,
+        handleDeleteProduct,
+        handleDeleteFit
+      }}
+    >
       {shouldNavDisplay && <NavigationBar />}
       <main className="flex bg-white justify-center items-center w-full">
         <Routes>
@@ -33,7 +48,7 @@ function App() {
           <Route key="404" path="/*" element={<NoPage />} />
         </Routes>
       </main>
-    </>
+    </DataContext.Provider>
   );
 }
 
