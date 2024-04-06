@@ -3,17 +3,15 @@ import { Card, Modal, Button, Typography, Image } from 'antd';
 import Tags from './Tags';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const MultiImageCard = ({ product, productIndex, onDelete }) => {
+const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [areProductsVisible, setProductsVisible] = useState(false);
-  const [productName, setProductName] = useState(product.name);
-  const [tempProductName, setTempProductName] = useState(product.name);
+  const [productName, setProductName] = useState(fit.name);
+  const [tempProductName, setTempProductName] = useState(fit.name);
 
   //TODO: SET THE IMAGES CURRENTLY ON INITIALIZATION
-  const [fitImages, setFitImages] = useState(Array.from({ length: 6 }, () => product.imageUrl));
-  const [tempFitImages, setTempFitImages] = useState(
-    Array.from({ length: 6 }, () => product.imageUrl)
-  );
+  const [fitImages, setFitImages] = useState(Array.from({ length: 6 }, () => fit.imageUrl));
+  const [tempFitImages, setTempFitImages] = useState(Array.from({ length: 6 }, () => fit.imageUrl));
 
   const showImagePreview = () => setProductsVisible(true);
 
@@ -38,7 +36,7 @@ const MultiImageCard = ({ product, productIndex, onDelete }) => {
 
   // to trigger the image upload
   const handleImageClick = (index) => {
-    document.getElementById(`fit-${productIndex}-product-${index}`).click();
+    document.getElementById(`fit-${fitIndex}-product-${index}`).click();
   };
 
   // handles the image upload and change
@@ -60,14 +58,14 @@ const MultiImageCard = ({ product, productIndex, onDelete }) => {
 
   // TODO: Add delete funcitonality here
   const deleteProduct = () => {
-    onDelete(product.id);
+    onDelete(fit.id);
   };
 
   return (
     <React.Fragment>
       <Card
         hoverable
-        className="max-w-64 m-4"
+        className="max-w-70 sm:max-w-70 md:max-w-64 m-4"
         actions={[
           <EditOutlined key="edit" onClick={showImagePreview} style={{ fontSize: '20px' }} />,
           <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
@@ -134,7 +132,7 @@ const MultiImageCard = ({ product, productIndex, onDelete }) => {
                 />
                 <input
                   type="file"
-                  id={`fit-${productIndex}-product-${index}`}
+                  id={`fit-${fitIndex}-product-${index}`}
                   style={{ display: 'none' }}
                   onChange={(event) => handleImageChange(index, event)}
                 />
@@ -173,7 +171,7 @@ const MultiImageCard = ({ product, productIndex, onDelete }) => {
                 <Image
                   width="100%"
                   src={imageUrl}
-                  alt={product.name}
+                  alt={fit.name}
                   fallback={<div>Loading...</div>}
                 />
               </div>
