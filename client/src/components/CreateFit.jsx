@@ -5,17 +5,21 @@ import { DataContext } from '../App';
 
 const { Option } = Select;
 
-const CreateFit = ({ open, onClose, products }) => {
+const CreateFit = ({ open, onClose, products, displayMode }) => {
   const { handleCreateFit } = useContext(DataContext);
 
   const [form] = Form.useForm();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [weather, setWeather] = useState('');
+  const [color, setColor] = useState('');
 
   const handleAddFit = () => {
     form.validateFields().then((values) => {
-      handleCreateFit({ ...values, images: selectedImages });
+      handleCreateFit({ ...values, images: selectedImages, weather, color });
       form.resetFields();
       setSelectedImages([]);
+      setWeather('');
+      setColor('');
       onClose();
     });
   };
@@ -24,11 +28,16 @@ const CreateFit = ({ open, onClose, products }) => {
     onClose();
     form.resetFields();
     setSelectedImages([]);
+    setWeather('');
+    setColor('');
   };
 
   const handleChange = (value) => {
     setSelectedImages(value);
   };
+
+  // TODO: add AI function
+  const handleAIChoose = () => {};
 
   return (
     <Modal
@@ -58,7 +67,7 @@ const CreateFit = ({ open, onClose, products }) => {
         <Form.Item
           name="images"
           label="Images"
-          rules={[{ required: true, message: 'Please select atleast one image!' }]}
+          rules={[{ required: true, message: 'Please select at least one image!' }]}
         >
           <Select
             mode="multiple"
@@ -74,6 +83,20 @@ const CreateFit = ({ open, onClose, products }) => {
             ))}
           </Select>
         </Form.Item>
+
+        {displayMode === 'generate' && (
+          <>
+            <Form.Item name="weather" label="Weather">
+              <Input />
+            </Form.Item>
+            <Form.Item name="color" label="Color">
+              <Input />
+            </Form.Item>
+            <Form.Item>
+              <Button onClick={handleAIChoose}>Let AI choose</Button>
+            </Form.Item>
+          </>
+        )}
       </Form>
     </Modal>
   );
