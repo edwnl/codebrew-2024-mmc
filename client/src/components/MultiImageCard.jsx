@@ -106,6 +106,7 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
           <Tags tags={['t-shirt', 'red', 'blue', 'indigo']} />
         </div>
       </Card>
+
       <Modal
         title="Edit Wardrobe Item"
         open={isModalVisible}
