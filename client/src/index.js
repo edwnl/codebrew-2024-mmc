@@ -4,7 +4,8 @@ import App from './App';
 import './styles.css'; // Import your styles
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import {AuthProvider} from "./auth/AuthContext";
+import { AuthProvider } from './auth/AuthContext';
+import { BrowserRouter } from 'react-router-dom';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -24,6 +25,10 @@ export const FIREBASE_APP = initializeApp(firebaseConfig);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider><App /></AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );

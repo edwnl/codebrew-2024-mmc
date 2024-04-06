@@ -1,0 +1,20 @@
+.Home {
+    text-align: center;
+    height: 400vh;
+}
+
+.Home-header {
+    top: 0;
+    position: sticky;
+    z-index: 1000;
+}
+
+.Home-header-not-sticky {
+    top: 0;
+    position: relative;
+}
+
+.Home-content {
+    padding: 20px;
+    margin-top: 20px; /* Adjust based on your design */
+}

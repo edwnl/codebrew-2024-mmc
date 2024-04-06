@@ -2,8 +2,8 @@ import { Card, Modal, Typography, Button, Image, Tag, Input } from 'antd';
 import React, { useState, useRef } from 'react';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false); // modal to update the product
+const ProductCard = ({ product, productIndex, imageSize = 240, onDelete }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [productName, setProductName] = useState(product.name);
   const [productImage, setProductImage] = useState(product.imageUrl);
   const [tempProductName, setTempProductName] = useState(product.name);
@@ -13,16 +13,13 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef(null);
-
   const productID = `product-no-${productIndex}`;
 
   // to handle the edit product modal
   const showModal = () => setIsModalVisible(true);
 
   // to close the edit product modal without any changes
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const handleCancel = () => setIsModalVisible(false);
 
   // updates the product details based on changes in modal
   const handleConfirm = () => {
@@ -31,11 +28,8 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
     setTags(tempTags);
     setIsModalVisible(false);
   };
-
   // to trigger the image upload
-  const handleImageClick = () => {
-    document.getElementById(productID).click();
-  };
+  const handleImageClick = () => document.getElementById(productID).click();
 
   // handles the image upload and change
   const handleImageChange = (event) => {
@@ -47,11 +41,8 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
       });
       return;
     }
-
     const reader = new FileReader();
-    reader.onload = (e) => {
-      setTempProductImage(e.target.result);
-    };
+    reader.onload = (e) => setTempProductImage(e.target.result);
     reader.readAsDataURL(file);
   };
 
@@ -61,10 +52,10 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
     setTempTags(updatedTags);
   };
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  // to add new tag text
+  const handleInputChange = (e) => setInputValue(e.target.value);
 
+  // to confirm the new tag text
   const handleInputConfirm = () => {
     if (inputValue.trim() !== '') {
       setTempTags([...tempTags, inputValue.trim()]);
@@ -73,13 +64,11 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
     }
   };
 
-  // Add delete funcitonality here
-  const deleteProduct = () => {};
+  // deletes the card on click
+  const handleDeleteProduct = () => onDelete(product.id);
 
-  const showInput = () => {
-    setInputVisible(true);
-  };
-
+  // to toggle between input and add tag
+  const showInput = () => setInputVisible(true);
   return (
     <>
       <Card
@@ -96,7 +85,7 @@ const ProductCard = ({ product, productIndex, imageSize = 240 }) => {
         className="max-w-64 m-2"
         actions={[
           <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
-          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={handleDeleteProduct} />
         ]}
       >
         <div>

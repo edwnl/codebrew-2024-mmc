@@ -3,7 +3,7 @@ import { Card, Modal, Button, Typography, Image } from 'antd';
 import Tags from './Tags';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const MultiImageCard = ({ product, productIndex }) => {
+const MultiImageCard = ({ product, productIndex, onDelete }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [areProductsVisible, setProductsVisible] = useState(false);
   const [productName, setProductName] = useState(product.name);
@@ -59,7 +59,9 @@ const MultiImageCard = ({ product, productIndex }) => {
   };
 
   // TODO: Add delete funcitonality here
-  const deleteProduct = () => {};
+  const deleteProduct = () => {
+    onDelete(product.id);
+  };
 
   return (
     <React.Fragment>
@@ -67,7 +69,7 @@ const MultiImageCard = ({ product, productIndex }) => {
         hoverable
         className="max-w-64 m-4"
         actions={[
-          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
+          <EditOutlined key="edit" onClick={showImagePreview} style={{ fontSize: '20px' }} />,
           <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
         ]}
       >
@@ -103,7 +105,7 @@ const MultiImageCard = ({ product, productIndex }) => {
         ]}
       >
         <div style={{ maxHeight: '500px', overflowY: 'scroll' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
             <div style={{ flex: 1 }}>
               <Typography.Title
                 level={4}
@@ -146,6 +148,9 @@ const MultiImageCard = ({ product, productIndex }) => {
         width="350px"
         onCancel={closeImagesPreview}
         footer={[
+          <Button key="edit" onClick={showModal} type="primary">
+            Edit
+          </Button>,
           <Button key="cancel" onClick={closeImagesPreview}>
             Close
           </Button>

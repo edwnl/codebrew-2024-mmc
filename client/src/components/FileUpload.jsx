@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 const FileUpload = ({ onFilesSelect }) => {
   const fileInputRef = useRef(null);
