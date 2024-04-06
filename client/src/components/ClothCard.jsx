@@ -29,12 +29,12 @@ const ClothCard = ({ cloth }) => {
   const handleInputChange = (e) => setInputValue(e.target.value);
   const handleInputConfirm = () => {
     if (inputValue.trim() !== '') {
-      setCloth({
-        ...cloth,
-        tags: [...cloth.tags, inputValue]
-      });
-
-      updateDB();
+      // setCloth({
+      //   ...cloth,
+      //   tags: [...cloth.tags, inputValue]
+      // });
+      //
+      // updateDB();
 
       setInputValue('');
       setInputVisible(false);
@@ -91,7 +91,7 @@ const ClothCard = ({ cloth }) => {
         className="max-w-64 min-w-64 m-2"
         actions={[
           <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
-          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={handleDeleteProduct} />
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} />
         ]}
       >
         <div>
@@ -135,7 +135,7 @@ const ClothCard = ({ cloth }) => {
 
             {/*  CLOTH TAGS  */}
             {cloth.tags.map((tag) => (
-              <Tag key={tag} closable onClose={() => handleTagClose(tag)}>
+              <Tag key={tag} closable>
                 {tag}
               </Tag>
             ))}
@@ -159,19 +159,13 @@ const ClothCard = ({ cloth }) => {
 
           {/*  CLOTH IMAGE  */}
           <div style={{ flex: 1 }}>
-            <input
-              type="file"
-              id={`product-no-${cloth.id}`}
-              style={{ display: 'none' }}
-              onChange={handleImageChange}
-            />
+            <input type="file" id={`product-no-${cloth.id}`} style={{ display: 'none' }} />
             <Image
               width="100%"
               height={240}
               preview={false}
-              src={cloth.imageUrl}
+              src={cloth.image}
               alt={cloth.name}
-              onClick={handleImageClick}
               fallback={'Loading'}
             />
           </div>
