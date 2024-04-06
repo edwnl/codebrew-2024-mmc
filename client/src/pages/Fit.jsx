@@ -6,8 +6,10 @@ import { PlusOutlined, SettingFilled } from '@ant-design/icons';
 import CreateFit from '../components/CreateFit';
 
 const Fit = () => {
-  const { products, fits, handleDeleteFit } = useContext(DataContext);
+  const { products, fits, handleDeleteFit, shareFit } = useContext(DataContext);
   const [isCreateFitVisible, setIsCreateFitVisible] = useState(false);
+  const [isGenerateFitVisible, setIsGenerateFitVisible] = useState(false);
+
   const handleClick = () => {
     setIsCreateFitVisible(true);
   };
@@ -16,13 +18,33 @@ const Fit = () => {
     setIsCreateFitVisible(false);
   };
 
-  const generateFits = () => {};
+  const enableGenerate = () => {
+    setIsGenerateFitVisible(true);
+  };
+
+  const handleGenerateClose = () => {
+    setIsGenerateFitVisible(false);
+  };
 
   return (
     <>
       {isCreateFitVisible && (
-        <CreateFit open={isCreateFitVisible} products={products} onClose={handleCreateFitClose} />
+        <CreateFit
+          open={isCreateFitVisible}
+          products={products}
+          onClose={handleCreateFitClose}
+          displayMode="add"
+        />
       )}
+      {isGenerateFitVisible && (
+        <CreateFit
+          open={isGenerateFitVisible}
+          products={products}
+          onClose={handleGenerateClose}
+          displayMode="generate"
+        />
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-start p-8">
         {fits.map((item, index) => (
           <div key={item.id}>
@@ -30,6 +52,7 @@ const Fit = () => {
               fit={item}
               fitIndex={index}
               products={products}
+              onShare={() => shareFit(item.id)}
               onDelete={() => handleDeleteFit(item.id)}
             />
           </div>
@@ -38,7 +61,7 @@ const Fit = () => {
 
       <FloatButton.Group shape="circle" style={{ right: 46 }} type="primary" size="large">
         <FloatButton icon={<PlusOutlined onClick={handleClick} />} />
-        <FloatButton icon={<SettingFilled onClick={generateFits} />} />
+        <FloatButton icon={<SettingFilled onClick={enableGenerate} />} />
       </FloatButton.Group>
     </>
   );

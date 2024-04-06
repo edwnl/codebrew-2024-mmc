@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button, Typography, Image } from 'antd';
 import Tags from './Tags';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ShareAltOutlined } from '@ant-design/icons';
 
-const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
+const MultiImageCard = ({ fit, fitIndex, products, onDelete, onShare }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [areProductsVisible, setProductsVisible] = useState(false);
   const [productName, setProductName] = useState(fit.name);
@@ -64,6 +64,10 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
     onDelete(fit.id);
   };
 
+  const shareProduct = () => {
+    onShare(fit.id);
+  };
+
   return (
     <React.Fragment>
       <Card
@@ -71,7 +75,8 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
         className="max-w-70 sm:max-w-70 md:max-w-64 m-2"
         actions={[
           <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
-          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
+          <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />,
+          <ShareAltOutlined key="share" style={{ fontSize: '20px' }} onClick={shareProduct} />
         ]}
       >
         <div className="grid grid-cols-2 gap-1">
