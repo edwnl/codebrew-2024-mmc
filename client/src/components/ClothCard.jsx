@@ -3,13 +3,16 @@ import React, { useState, useRef } from 'react';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
-const ClothCard = ({ cloth_data }) => {
-  const [cloth, setCloth] = useState(cloth_data);
+const ClothCard = ({ cloth }) => {
+  console.log(cloth); // Logging cloth prop
+  const [clothState, setClothState] = useState(cloth); // Changed to cloth
+
+  const functions = getFunctions();
 
   const updateDB = async () => {
     // Call the Firebase Cloud Function for editing a cloth
-    const editCloth = functions.httpsCallable('edit_cloth_handler');
-    const editClothResponse = await editCloth(cloth);
+    const editCloth = httpsCallable(functions, 'edit_cloth_handler');
+    const editClothResponse = await editCloth(clothState); // Changed to clothState
     console.log('Edit Cloth Response:', editClothResponse.data);
   };
 
@@ -80,12 +83,12 @@ const ClothCard = ({ cloth_data }) => {
           <Image
             width="100%"
             height={240}
-            src={cloth.imageUrl}
+            src={cloth.image}
             alt={cloth.name}
             fallback={'Loading'}
           />
         }
-        className="max-w-64 m-2"
+        className="max-w-64 min-w-64 m-2"
         actions={[
           <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
           <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={handleDeleteProduct} />

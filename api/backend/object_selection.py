@@ -84,7 +84,7 @@ def match_to_set_colors(img, set_colors=COLOURS):
     for i in range(len(matched_colors)):
         colour_count[matched_colors[i]] += cluster_count[i]
     
-    return colour_count
+    return sorted(list(colour_count.keys()), key=colour_count, reverse=True)
 
 def find_clothing_type(img):
     '''Uses a pre-trained model to determine the type of clothing in the image'''
@@ -111,7 +111,15 @@ def find_clothing_type(img):
     
     return LABEL_TO_INT[str(predicted.item())]
 
-
+def get_all_data(img_url: str):
+    img = Image.open(img_url)
+    img = remove_background(img)
+    colours = match_to_set_colors(img)
+    cloth_type = find_clothing_type(img)
+    # upload new image to database and get url link to image\
+    new_img_url = ""
+    data = {"imageUrl": new_img_url, "name": colours[0]+" "+cloth_type, "tags": [clr for clr in colours]}
+    return data
 
 # add timer
 start = time.time()
