@@ -51,17 +51,17 @@ const NavigationBar = () => {
 
   return (
     <>
-      <nav className="bg-white hidden md:block">
+      <nav className="bg-white hidden md:block border-b-2 border-black">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/" className="flex items-center space-x-3">
             <Logo className={'text-3xl pt-5'} />
           </Link>
           <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 md:flex-row md:mt-0 md:border-0">
+            <ul className="flex flex-col mr-20 p-5 mt-4 md:p-0 rounded-lg md:space-x-8 md:flex-row md:border-0">
               {NAV_ROUTES.map((item) => (
                 <li key={item.id}>
                   <Link to={item.to} tabIndex={1} className="block py-2 px-3 md:p-0">
-                    <Typography.Title level={3}>{item.text}</Typography.Title>
+                    <Typography.Title level={4}>{item.text}</Typography.Title>
                   </Link>
                 </li>
               ))}
@@ -73,7 +73,7 @@ const NavigationBar = () => {
               type="button"
               className="text-white bg-black hover:bg-gray-800 rounded-lg text-base px-4 py-2 text-center"
             >
-              Logout
+              Login
             </button>
           </div>
         </div>
