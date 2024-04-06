@@ -18,12 +18,24 @@ export const useDataContext = () => {
     setFits(fits.filter((fit) => fit.id !== fitID));
   };
 
+  const handleCreateFit = (fitData) => {
+    console.log('Creating fit:', fitData);
+    const newFit = {
+      id: Date.now(), // TODO update this
+      name: fitData.name,
+      imageUrl: fitData.images, // Assuming you only save one image URL per fit
+      tags: fitData.tags
+    };
+    setFits([...fits, newFit]);
+  };
+
   return {
     fits,
     setFits,
     products,
     setProducts,
     handleDeleteProduct,
+    handleCreateFit,
     handleDeleteFit
   };
 };

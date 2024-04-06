@@ -18,7 +18,10 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
   const closeImagesPreview = () => setProductsVisible(false);
 
   // to handle the edit product modal
-  const showModal = () => setIsModalVisible(true);
+  const showModal = () => {
+    setProductsVisible(false); // hides the preview modal
+    setIsModalVisible(true); // enables the edit modal
+  };
 
   // to close the edit product modal without any changes
   const handleCancel = () => {
@@ -65,24 +68,38 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
     <React.Fragment>
       <Card
         hoverable
-        className="max-w-70 sm:max-w-70 md:max-w-64 m-4"
+        className="max-w-70 sm:max-w-70 md:max-w-64 m-2"
         actions={[
-          <EditOutlined key="edit" onClick={showImagePreview} style={{ fontSize: '20px' }} />,
+          <EditOutlined key="edit" onClick={showModal} style={{ fontSize: '20px' }} />,
           <DeleteOutlined key="delete" style={{ fontSize: '20px' }} onClick={deleteProduct} />
         ]}
       >
         <div className="grid grid-cols-2 gap-1">
-          {fitImages.slice(0, 4).map((imageUrl, index) => (
+          {fitImages.slice(0, 3).map((imageUrl, index) => (
             <div key={index} className="w-full">
               <Image
                 width="100%"
+                height="100%"
+                style={{ objectFit: 'cover' }}
                 src={imageUrl}
-                preview={false}
+                preview={true}
                 alt={productName}
                 fallback={<div>Loading...</div>}
               />
             </div>
           ))}
+          <div key={'extra'} className="w-full">
+            <Image
+              width="100%"
+              preview={false}
+              height="100%"
+              style={{ objectFit: 'cover' }}
+              src={fitImages[3]}
+              onClick={showImagePreview}
+              alt={'See all products'}
+              fallback={<div>Loading...</div>}
+            />
+          </div>
         </div>
         <div className="mt-2">
           <Card.Meta title={productName} />
@@ -126,6 +143,8 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
                   preview={false}
                   alt={productName}
                   src={imageUrl}
+                  height="100%"
+                  style={{ objectFit: 'cover' }}
                   onClick={() => handleImageClick(index)}
                   className="w-full h-auto rounded-lg"
                 />
@@ -165,12 +184,14 @@ const MultiImageCard = ({ fit, fitIndex, products, onDelete }) => {
           }}
         >
           <div style={{ maxWidth: '300px' }}>
-            {fitImages.map((imageUrl, index) => (
+            {tempFitImages.map((imageUrl, index) => (
               <div key={index} className="image-container mb-2">
                 <Image
                   width="100%"
                   src={imageUrl}
                   alt={fit.name}
+                  height="100%"
+                  style={{ objectFit: 'cover' }}
                   fallback={<div>Loading...</div>}
                 />
               </div>
